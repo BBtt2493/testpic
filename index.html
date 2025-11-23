@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Happy Day</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #ffeaf3;
+        padding: 30px;
+    }
+
+    #qrImage {
+        width: 220px;
+        margin-top: 20px;
+        display: none; /* ซ่อนก่อน */
+        animation: fadeIn 1s ease;
+    }
+
+    #message {
+        font-size: 24px;
+        color: #ff4d88;
+        margin-top: 20px;
+        display: none; /* ซ่อนก่อน */
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    button {
+        font-size: 20px;
+        padding: 12px 22px;
+        border-radius: 12px;
+        border: none;
+        background-color: #ff77aa;
+        color: white;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #ff5c91;
+    }
+
+</style>
+</head>
+<body>
+
+<h1>เซอร์ไพรส์จ้า 💖</h1>
+
+<!-- ปุ่ม -->
+<button id="moreBtn">กดอีกๆๆๆๆ 💞</button>
+
+<!-- รูป QR -->
+<img id="qrImage" src="QR Code.png" alt="QR">
+
+<!-- ข้อความ -->
+<div id="message">สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ</div>
+
+<!-- เพลง -->
+<audio id="mySong" src="song.mp3"></audio>
+
+<script>
+    let clicked = false;
+
+    document.getElementById("moreBtn").addEventListener("click", function() {
+        const song = document.getElementById("mySong");
+        const msg = document.getElementById("message");
+        const qr = document.getElementById("qrImage");
+
+        if (!clicked) {
+            // ครั้งแรก → เล่นเพลง + แสดงรูป + ข้อความ
+            song.play().catch(e => console.log("Autoplay blocked:", e));
+            msg.style.display = "block";
+            qr.style.display = "block";
+            clicked = true;
+
+            this.innerText = "กดอีกๆๆๆ 💘";
+        } else {
+            // ครั้งถัดไป
+            alert("รักมากๆ 💗");
+        }
+    });
+</script>
+
+</body>
+</html>
