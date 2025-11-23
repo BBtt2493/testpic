@@ -2,8 +2,10 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Anniversary Music</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สุขสันต์วันครบรอบ 1 เดือนน้า 💗</title>
 <style>
+    /* ตั้งค่าเริ่มต้น */
     body {
         margin: 0;
         padding: 0;
@@ -14,6 +16,7 @@
         text-align: center;
     }
 
+    /* สไตล์ปุ่ม */
     #startBtn, #moreBtn {
         position: absolute;
         top: 50%;
@@ -26,34 +29,46 @@
         cursor: pointer;
         color: white;
         z-index: 10;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.1s;
     }
 
     #startBtn { background: #ff7bd5; display: block; }
     #moreBtn { background: #ff4fab; display: none; }
 
+    #startBtn:active, #moreBtn:active {
+        transform: translate(-50%, -50%) scale(0.98);
+    }
+
+    /* กล่องข้อความ */
     #message {
         position: absolute;
         top: 55%;
         width: 100%;
         text-align: center;
         font-size: 40px;
+        font-weight: bold;
         color: #ff3e9e;
         opacity: 0;
         transition: opacity 1.2s ease;
         z-index: 10;
     }
 
-    /* รูป QR เพิ่มมาแค่ตรงนี้ */
-    #qrImage {
+    /* รูปภาพ QR Code ที่จะแสดงพร้อมข้อความแรก */
+    #qrCodeImage {
         position: absolute;
-        top: 20%;
+        top: 40%; 
         left: 50%;
-        transform: translateX(-50%);
-        width: 250px;
-        display: none;
-        z-index: 9;
+        transform: translate(-50%, -50%);
+        width: 300px; 
+        height: 300px; 
+        object-fit: contain;
+        opacity: 0; /* ซ่อนไว้ในตอนแรก */
+        transition: opacity 1.5s ease-in-out; /* ปรับ transition ให้ดูนุ่มนวลขึ้น */
+        z-index: 9; 
     }
 
+    /* Emoji ที่ร่วงลงมา */
     .emoji {
         position: fixed;
         top: -50px;
@@ -73,10 +88,9 @@
 <button id="startBtn">สุขสันต์วันครบรอบ 1 เดือนน้า 💗</button>
 <button id="moreBtn">กดอีกๆๆๆๆ 💞</button>
 
-<!-- รูป QR -->
-<img id="qrImage" src="QR Code.png" alt="QR">
-
 <div id="message"></div>
+
+<img id="qrCodeImage" src="QR Code.png" alt="QR Code">
 
 <audio id="bgm" src="raoCOC.mp3" loop></audio>
 
@@ -84,12 +98,13 @@
     const startBtn = document.getElementById("startBtn");
     const moreBtn = document.getElementById("moreBtn");
     const message = document.getElementById("message");
-    const qr = document.getElementById("qrImage");
     const bgm = document.getElementById("bgm");
+    const qrCodeImage = document.getElementById("qrCodeImage");
 
+    // ฟังก์ชันสร้าง Emoji ร่วง
     function spawnEmojis() {
-        const emojis = ["💖","💗","💞","💕","💘","✨","🌸","💓"];
-        for (let i = 0; i < 80; i++) { 
+        const emojis = ["💖","💗","💞","💕","💘","✨","🌸","💓","🐷","🌹","💐","🌷",];
+        for (let i = 0; i < 80; i++) {
             let e = document.createElement("div");
             e.classList.add("emoji");
             e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
@@ -101,6 +116,7 @@
         }
     }
 
+    // === ขั้นตอนที่ 1: เมื่อกดปุ่ม START ===
     startBtn.onclick = () => {
         spawnEmojis();
         startBtn.style.display = "none";
@@ -110,25 +126,28 @@
         setTimeout(() => { moreBtn.style.display = "block"; }, 1800);
     };
 
+    // === ขั้นตอนที่ 2: เมื่อกดปุ่ม MORE (เริ่มเล่นเพลง, แสดงรูป, และข้อความยาว) ===
     moreBtn.onclick = () => {
         message.style.opacity = 0;
         moreBtn.style.display = "none";
+        document.body.style.background = "#ffd6ec"; 
 
-        document.body.style.background = "#ffd6ec";
-
-        bgm.play();
+        // 1. เล่นเพลงทันที
+        bgm.play().catch(error => {
+            console.log("Audio playback failed:", error);
+        }); 
 
         const texts = [
-            "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ",
+            "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ", // ข้อความแรกที่จะแสดงพร้อมรูป
             "มีความสุขมากๆนะ",
             "เค้ารักเธอมากๆๆ😘",
             "สุขภาพร่างกายแข็งแรง",
             "ไม่เจ็บไม่ป่วย",
-            "อยู่กับเค้าไปนานๆนะ",
+            "อยู่กับหมูตัวนี้ไปนานๆนะ🐷🐽",
             "ขอให้ติดมหาลัยด้วยนะๆๆ",
             "แล้วก็ขอบคุณน้าที่อยู่กับเค้ามาจนครบ 1 เดือน",
             "ขอบคุณมากที่เธออยู่กับเค้าตลอด💞",
-            "ดีใจมากๆๆที่มีเธอในทุกอยู่วัน 💓",
+            "ดีใจมากๆๆที่มีเธอในทุกวัน 💓",
             "พิมพ์ไรอีกดี🤔🤔",
             "อ่อๆๆๆๆ",
             "ขอให้น่ารักกันแบบนี้ไปเรื่อยๆนะ 💖",
@@ -142,29 +161,35 @@
         ];
 
         let i = 0;
-
         function showNext() {
-            if (i >= texts.length) return;
-
+            if (i >= texts.length) {
+                 qrCodeImage.style.opacity = 0;
+                 return;
+            }
+            
             message.innerHTML = texts[i];
             message.style.opacity = 1;
 
-            // ⬇⬇ เพิ่มแค่ตรงนี้เท่านั้น ⬇⬇
-            if (texts[i] === "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ") {
-                qr.style.display = "block";
-            } else {
-                qr.style.display = "none";
+            // ตรวจสอบว่าเป็นข้อความแรกหรือไม่
+            if (i === 0) {
+                // รูปภาพจะจางเข้า (Fade In)
+                qrCodeImage.style.opacity = 1; 
             }
-            // ⬆⬆ จบส่วนเพิ่ม ⬆⬆
 
             setTimeout(() => {
-                message.style.opacity = 0;
+                message.style.opacity = 0; // ซ่อนข้อความปัจจุบัน
+                
+                // ทำให้รูปภาพจางหายไป (Fade Out) หลังแสดงข้อความแรก
+                if (i === 0) {
+                   qrCodeImage.style.opacity = 0; 
+                }
+                
                 i++;
-                setTimeout(showNext, 1200);
-            }, 2000);
+                setTimeout(showNext, 1200); // รอ 1.2 วิ แล้วแสดงข้อความถัดไป
+            }, 2000); // แสดงข้อความแต่ละอัน 2 วินาที
         }
-
-        setTimeout(showNext, 1300);
+        
+        setTimeout(showNext, 1300); // เริ่มแสดงข้อความชุดแรก
     };
 </script>
 
