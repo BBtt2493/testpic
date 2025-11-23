@@ -43,21 +43,15 @@
         z-index: 10;
     }
 
-    /* รูป QR */
+    /* รูป QR เพิ่มมาแค่ตรงนี้ */
     #qrImage {
         position: absolute;
-        top: 18%;
+        top: 20%;
         left: 50%;
         transform: translateX(-50%);
         width: 250px;
         display: none;
         z-index: 9;
-        animation: fadeIn 1s ease;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateX(-50%) scale(0.9); }
-        to { opacity: 1; transform: translateX(-50%) scale(1); }
     }
 
     .emoji {
@@ -79,6 +73,7 @@
 <button id="startBtn">สุขสันต์วันครบรอบ 1 เดือนน้า 💗</button>
 <button id="moreBtn">กดอีกๆๆๆๆ 💞</button>
 
+<!-- รูป QR -->
 <img id="qrImage" src="QR Code.png" alt="QR">
 
 <div id="message"></div>
@@ -106,7 +101,6 @@
         }
     }
 
-    // ปุ่มแรก
     startBtn.onclick = () => {
         spawnEmojis();
         startBtn.style.display = "none";
@@ -116,14 +110,12 @@
         setTimeout(() => { moreBtn.style.display = "block"; }, 1800);
     };
 
-    // ปุ่มกดอีก
     moreBtn.onclick = () => {
         message.style.opacity = 0;
         moreBtn.style.display = "none";
 
         document.body.style.background = "#ffd6ec";
 
-        // เล่นเพลงทันที
         bgm.play();
 
         const texts = [
@@ -150,19 +142,20 @@
         ];
 
         let i = 0;
+
         function showNext() {
             if (i >= texts.length) return;
 
             message.innerHTML = texts[i];
             message.style.opacity = 1;
 
-            // ⬇⬇ เงื่อนไขโชว์รูปเฉพาะข้อความแรก ⬇⬇
+            // ⬇⬇ เพิ่มแค่ตรงนี้เท่านั้น ⬇⬇
             if (texts[i] === "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ") {
                 qr.style.display = "block";
             } else {
                 qr.style.display = "none";
             }
-            // ⬆⬆ จบเงื่อนไขรูป ⬆⬆
+            // ⬆⬆ จบส่วนเพิ่ม ⬆⬆
 
             setTimeout(() => {
                 message.style.opacity = 0;
