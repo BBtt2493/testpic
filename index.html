@@ -2,89 +2,177 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Happy Day</title>
+<title>Anniversary Music</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: white;
+        transition: background 1.5s ease;
+        font-family: "Prompt", sans-serif;
         text-align: center;
-        background-color: #ffeaf3;
-        padding: 30px;
     }
 
-    #qrImage {
-        width: 220px;
-        margin-top: 20px;
-        display: none; /* ซ่อนก่อน */
-        animation: fadeIn 1s ease;
+    #startBtn, #moreBtn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        font-size: 22px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        color: white;
+        z-index: 10;
     }
+
+    #startBtn { background: #ff7bd5; display: block; }
+    #moreBtn { background: #ff4fab; display: none; }
 
     #message {
-        font-size: 24px;
-        color: #ff4d88;
-        margin-top: 20px;
-        display: none; /* ซ่อนก่อน */
+        position: absolute;
+        top: 55%;
+        width: 100%;
+        text-align: center;
+        font-size: 40px;
+        color: #ff3e9e;
+        opacity: 0;
+        transition: opacity 1.2s ease;
+        z-index: 10;
+    }
+
+    /* รูป QR */
+    #qrImage {
+        position: absolute;
+        top: 18%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 250px;
+        display: none;
+        z-index: 9;
         animation: fadeIn 1s ease;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
+        from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+        to { opacity: 1; transform: translateX(-50%) scale(1); }
     }
 
-    button {
-        font-size: 20px;
-        padding: 12px 22px;
-        border-radius: 12px;
-        border: none;
-        background-color: #ff77aa;
-        color: white;
-        cursor: pointer;
-        margin-top: 20px;
+    .emoji {
+        position: fixed;
+        top: -50px;
+        font-size: 40px;
+        animation: fall 3s linear forwards;
+        pointer-events: none;
     }
 
-    button:hover {
-        background-color: #ff5c91;
+    @keyframes fall {
+        0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
-
 </style>
 </head>
 <body>
 
-<h1>เซอร์ไพรส์จ้า 💖</h1>
-
-<!-- ปุ่ม -->
+<button id="startBtn">สุขสันต์วันครบรอบ 1 เดือนน้า 💗</button>
 <button id="moreBtn">กดอีกๆๆๆๆ 💞</button>
 
-<!-- รูป QR -->
 <img id="qrImage" src="QR Code.png" alt="QR">
 
-<!-- ข้อความ -->
-<div id="message">สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ</div>
+<div id="message"></div>
 
-<!-- เพลง -->
-<audio id="mySong" src="song.mp3"></audio>
+<audio id="bgm" src="raoCOC.mp3" loop></audio>
 
 <script>
-    let clicked = false;
+    const startBtn = document.getElementById("startBtn");
+    const moreBtn = document.getElementById("moreBtn");
+    const message = document.getElementById("message");
+    const qr = document.getElementById("qrImage");
+    const bgm = document.getElementById("bgm");
 
-    document.getElementById("moreBtn").addEventListener("click", function() {
-        const song = document.getElementById("mySong");
-        const msg = document.getElementById("message");
-        const qr = document.getElementById("qrImage");
-
-        if (!clicked) {
-            // ครั้งแรก → เล่นเพลง + แสดงรูป + ข้อความ
-            song.play().catch(e => console.log("Autoplay blocked:", e));
-            msg.style.display = "block";
-            qr.style.display = "block";
-            clicked = true;
-
-            this.innerText = "กดอีกๆๆๆ 💘";
-        } else {
-            // ครั้งถัดไป
-            alert("รักมากๆ 💗");
+    function spawnEmojis() {
+        const emojis = ["💖","💗","💞","💕","💘","✨","🌸","💓"];
+        for (let i = 0; i < 80; i++) { 
+            let e = document.createElement("div");
+            e.classList.add("emoji");
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + "vw";
+            e.style.fontSize = (30 + Math.random() * 25) + "px";
+            e.style.animationDuration = (2.5 + Math.random() * 2) + "s";
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 4000);
         }
-    });
+    }
+
+    // ปุ่มแรก
+    startBtn.onclick = () => {
+        spawnEmojis();
+        startBtn.style.display = "none";
+        message.innerHTML = "สุขสันต์วันครบรอบ 1 เดือนน้า 💗";
+        message.style.opacity = 1;
+
+        setTimeout(() => { moreBtn.style.display = "block"; }, 1800);
+    };
+
+    // ปุ่มกดอีก
+    moreBtn.onclick = () => {
+        message.style.opacity = 0;
+        moreBtn.style.display = "none";
+
+        document.body.style.background = "#ffd6ec";
+
+        // เล่นเพลงทันที
+        bgm.play();
+
+        const texts = [
+            "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ",
+            "มีความสุขมากๆนะ",
+            "เค้ารักเธอมากๆๆ😘",
+            "สุขภาพร่างกายแข็งแรง",
+            "ไม่เจ็บไม่ป่วย",
+            "อยู่กับเค้าไปนานๆนะ",
+            "ขอให้ติดมหาลัยด้วยนะๆๆ",
+            "แล้วก็ขอบคุณน้าที่อยู่กับเค้ามาจนครบ 1 เดือน",
+            "ขอบคุณมากที่เธออยู่กับเค้าตลอด💞",
+            "ดีใจมากๆๆที่มีเธอในทุกอยู่วัน 💓",
+            "พิมพ์ไรอีกดี🤔🤔",
+            "อ่อๆๆๆๆ",
+            "ขอให้น่ารักกันแบบนี้ไปเรื่อยๆนะ 💖",
+            "รักที่สุดเลยน้า 💘",
+            "จุ้บๆ รักเธอน้าา💓💞💖",
+            "หมดแล้ววว",
+            "กดออกได้เลย",
+            "ยังอยู่อีกๆ",
+            "ไม่มีไรแร้ววว",
+            "ออกเถอะะ",
+        ];
+
+        let i = 0;
+        function showNext() {
+            if (i >= texts.length) return;
+
+            message.innerHTML = texts[i];
+            message.style.opacity = 1;
+
+            // ⬇⬇ เงื่อนไขโชว์รูปเฉพาะข้อความแรก ⬇⬇
+            if (texts[i] === "สุขสันต์วันเกิดและวันครบรอบ 1 เดือนนะคะ") {
+                qr.style.display = "block";
+            } else {
+                qr.style.display = "none";
+            }
+            // ⬆⬆ จบเงื่อนไขรูป ⬆⬆
+
+            setTimeout(() => {
+                message.style.opacity = 0;
+                i++;
+                setTimeout(showNext, 1200);
+            }, 2000);
+        }
+
+        setTimeout(showNext, 1300);
+    };
 </script>
 
 </body>
